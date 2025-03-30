@@ -55,7 +55,7 @@ class Game:
         else:
             self.create_item(pos)
 
-        # Spawn an item at the position
+    # Spawn an item at the position
 
     def create_item(self, pos):
         # Get current image name
@@ -67,10 +67,15 @@ class Game:
             self.item = Item(pos[0], pos[1], -10, 60, image_name)
         elif self.item_mode_index == 2:
             self.item = Item(pos[0], pos[1], 0, 40, image_name)
-        # Start moving the pet
-        self.set_speed()
 
-    # Draw the screen, bar, buttons, item, pet
+    def handle_item_collision(self):
+        if self.item != None:
+            # Stop movement by setting speeds to 0
+            self.d_x = 0
+            self.d_y = 0
+
+    # Draw the screen, bar, buttons, item
+
     def draw_everything(self):
         # Screen
         self.screen.fill(self.background_colour)
@@ -97,9 +102,10 @@ class Game:
                     return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.handle_mouse_click()
+            # Detect item collision
+            self.handle_item_collision()
             # Draw
             self.draw_everything()
-
             # Tick clock
             self.clock.tick(self.clock_tick)
 
